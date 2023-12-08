@@ -1,5 +1,5 @@
 const adminModel = require('../models/adminModel')
-const { responseReture } = require('../utiles/response')
+const { responseReturn } = require('../utiles/response')
 const bcrpty = require('bcrypt')
 const { createToken } = require('../utiles/tokenCreate')
 
@@ -20,20 +20,20 @@ class authControllers{
                     res.cookie('accessToken',token,{
                         expires : new Date(Date.now() + 7*24*60*60*1000 )
                     })
-                    responseReture(res,200,{token,message: "Login Success"})
+                    responseReturn(res,200,{token,message: "Login Success"})
                 } else {
-                    responseReture(res,404,{error: "Password Wrong"})
+                    responseReturn(res,404,{error: "Password Wrong"})
                 }
 
 
 
                  
             } else {
-                responseReture(res,404,{error: "Email not Found"})
+                responseReturn(res,404,{error: "Email not Found"})
             }
             
         } catch (error) {
-            responseReture(res,500,{error: error.message})
+            responseReturn(res,500,{error: error.message})
         }
 
 
