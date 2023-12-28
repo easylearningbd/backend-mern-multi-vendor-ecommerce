@@ -1,4 +1,5 @@
 const adminModel = require('../models/adminModel')
+const sellerModel = require('../models/sellerModel')
 const { responseReturn } = require('../utiles/response')
 const bcrpty = require('bcrypt')
 const { createToken } = require('../utiles/tokenCreate')
@@ -42,6 +43,23 @@ class authControllers{
 
     seller_register = async(req, res) => {
          const {email,name,password} = req.body
+         try {
+            const getUser = await sellerModel.findOne({email})
+            if (getUser) {
+                responseReturn(res,404,{error: 'Email Already Exit'})
+            }else{
+                const seller = await sellerModel.create({
+                    name,
+                    email,
+                    password: await bcrpty.hash(password, 10),
+                    method : 'menualy',
+                    shopInfo: {}
+                })
+                console.log(seller)
+            }
+         } catch (error) {
+            console.log(error)
+         }
     }
 
 
