@@ -57,7 +57,7 @@ class categoryController{
        const skipPage = parseInt(parPage) * (parseInt(page) - 1)
 
        try {
-        if (searchValue) {
+        if (searchValue && page && parPage) {
             const categorys = await categoryModel.find({
                 $text: { $search: searchValue }
             }).skip(skipPage).limit(parPage).sort({ createdAt: -1})
@@ -65,16 +65,24 @@ class categoryController{
                 $text: { $search: searchValue }
             }).countDocuments()
             responseReturn(res, 200,{categorys,totalCategory})
-        } else {
+        } 
+        else if(searchValue === '' && page && parPage) {
 
             const categorys = await categoryModel.find({ }).skip(skipPage).limit(parPage).sort({ createdAt: -1})
+            const totalCategory = await categoryModel.find({ }).countDocuments()
+            responseReturn(res, 200,{categorys,totalCategory}) 
+        } 
+        
+        else {
+
+            const categorys = await categoryModel.find({ }).sort({ createdAt: -1})
             const totalCategory = await categoryModel.find({ }).countDocuments()
             responseReturn(res, 200,{categorys,totalCategory})
             
         }
         
        } catch (error) {
-        
+            console.log(error.message)
        }
 
 
