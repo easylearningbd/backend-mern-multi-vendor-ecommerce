@@ -60,7 +60,7 @@ class categoryController{
             if (parPage && page) {
                 skipPage = parseInt(parPage) * (parseInt(page) - 1)
             }
-
+ 
         if (searchValue && page && parPage) {
             const categorys = await categoryModel.find({
                 $text: { $search: searchValue }
