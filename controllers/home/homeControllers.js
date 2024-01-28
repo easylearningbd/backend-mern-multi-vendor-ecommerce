@@ -106,10 +106,19 @@ query_products = async (req, res) => {
         const products = await productModel.find({}).sort({
             createdAt: -1
         })
-        const totalProduct = new this.queryProducts()
+        const totalProduct = new queryProducts(products, req.query).categoryQuery().ratingQuery().priceQuery().sortByPrice().countProducts();
+
+        const result = new queryProducts(products, req.query).categoryQuery().ratingQuery().priceQuery().sortByPrice().limit().skip().getProducts();
+        
+        responseReturn(res, 200, {
+            products: result,
+            totalProduct,
+            parPage
+        })
+
         
     } catch (error) {
-        
+        console.log(error.message)
     }
  
 }
