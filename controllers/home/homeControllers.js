@@ -98,6 +98,11 @@ class homeControllers{
 
 // end method 
 
+query_products = async (req, res) => {
+console.log(req.query)
+}
+// end method 
+
 
 
 }
