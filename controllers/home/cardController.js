@@ -39,6 +39,7 @@ class cardController{
     // End Method 
 
     get_card_products = async(req, res) => {
+       const co = 5;
        const {userId } = req.params
        try {
         const card_products = await cardModel.aggregate([{
@@ -77,10 +78,45 @@ class cardController{
             calculatePrice  = calculatePrice + quantity * price
         }        
       } // end for
-      let p = [] 
+      let p = []
+      let unique = [...new Set(stockProduct.map(p => p.products[0].sellerId.toString()))] 
+      for (let i = 0; i < unique.length; i++) {
+        let price = 0;
+        for (let j = 0; j < stockProduct.length; j++) {
+           const tempProduct = stockProduct[j].products[0]
+           if (unique[i] === tempProduct.sellerId.toString()) {
+                let pri = 0;
+                if (tempProduct.discount !== 0) {
+                    pri = tempProduct.price - Math.floor((tempProduct.price * tempProduct.discount) / 100 )
+                } else {
+                    pri = tempProduct.price
+                }
+        pri = pri - Math.floor((pri * co) / 100)
+        price = price + pri * stockProduct[j].quantity
+        p[i] = {
+            sellerId: unique[i], 
+            shopName: tempProduct.shopName,
+            price,
+            products: p[i] ? [
+                ...p[i].products,
+                {
+                    _id: stockProduct[j]._id,
+                    quantity: stockProduct[j].quantity,
+                    productInfo: tempProduct 
+                }
+            ] : [{
+                _id: stockProduct[j]._id,
+                quantity: stockProduct[j].quantity,
+                productInfo: tempProduct 
+            }]
+          } 
+
+           } 
+        } 
+      }
 
 
-            console.log(calculatePrice)
+            console.log(p)
        } catch (error) {
          console.log(error.message)
        }
