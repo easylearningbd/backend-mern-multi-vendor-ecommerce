@@ -132,7 +132,18 @@ class cardController{
     // End Method 
 
 
-
+    delete_card_products = async (req, res) => {
+        const {card_id } = req.params
+        try {
+            await cardModel.findByIdAndDelete(card_id)
+            responseReturn(res,200,{message: "Product Remove Successfully" })
+            
+        } catch (error) {
+            console.log(error.message)
+        }
+         
+    }
+       // End Method 
 
 
 
