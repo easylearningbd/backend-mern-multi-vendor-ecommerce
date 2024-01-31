@@ -5,6 +5,28 @@ const moment = require("moment")
 const { responseReturn } = require('../../utiles/response') 
 
 class orderController{
+
+    paymentCheck = async (id) => {
+        try {
+            const order = await customerOrder.findById(id)
+            if (order.payment_status === 'unpaid') {
+                await customerOrder.findByIdAndUpdate(id, {
+                    delivery_status: 'cancelled'
+                })
+                await authOrderModel.updateMany({
+                    orderId: id
+                },{
+                    delivery_status: 'cancelled'
+                })
+            }
+            return true
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // end method 
+      
     place_order = async (req,res) => {
         const {price,products,shipping_fee,shippingInfo,userId } = req.body
         let authorOrderData = []
@@ -27,20 +49,21 @@ class orderController{
 
         try {
             const order = await customerOrder.create({
-                customerId: userId,shippingInfo,
+                customerId: userId,
+                shippingInfo,
                 products: customerOrderProduct,
                 price: price + shipping_fee,
-                payment_status: 'pending',
-                delivery_status: 'unpaid',
+                payment_status: 'unpaid',
+                delivery_status: 'pending',
                 date: tempDate
             })
             for (let i = 0; i < products.length; i++) {
-                const pro = products[i].products;
+                const pro = products[i].products
                 const pri = products[i].price
                 const sellerId = products[i].sellerId
                 let storePor = []
                 for (let j = 0; j < pro.length; j++) {
-                    const tempPro = pro[j].productInfo;
+                    const tempPro = pro[j].productInfo
                     tempPro.quantity = pro[j].quantity
                     storePor.push(tempPro)                    
                 }
@@ -60,6 +83,10 @@ class orderController{
             for (let k = 0; k < cardId.length; k++) {
                 await cardModel.findByIdAndDelete(cardId[k]) 
             }
+   
+            setTimeout(() => {
+                this.paymentCheck(order.id)
+            }, 15000)
 
             responseReturn(res,200,{message: "Order Placed Success" , orderId: order.id })
 
