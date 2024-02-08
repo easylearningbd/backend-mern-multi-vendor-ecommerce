@@ -131,7 +131,28 @@ class orderController{
      // End Method 
 
      get_orders = async (req, res) => {
-        console.log(req.params)
+        const {customerId, status} = req.params
+
+        try {
+            let orders = []
+            if (status !== 'all') {
+                orders = await customerOrder.find({
+                    customerId: new ObjectId(customerId),
+                    delivery_status: status
+                })
+            } else {
+                orders = await customerOrder.find({
+                    customerId: new ObjectId(customerId)
+                })
+            }
+            responseReturn(res, 200,{
+                orders
+            })
+            
+        } catch (error) {
+            console.log(error.message)
+        }
+
      }
  // End Method 
 
