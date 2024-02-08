@@ -130,8 +130,10 @@ class orderController{
     }
      // End Method 
 
-
-
+     get_orders = async (req, res) => {
+        console.log(req.params)
+     }
+ // End Method 
 
 
 }
