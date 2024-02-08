@@ -124,6 +124,10 @@ query_products = async (req, res) => {
 }
 // end method 
 
+product_details = async (req, res) => {
+    console.log(req.params)
+}
+
 
 
 }
