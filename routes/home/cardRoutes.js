@@ -9,5 +9,6 @@ router.put('/home/product/quantity-dec/:card_id',cardController.quantity_dec)
 
 router.post('/home/product/add-to-wishlist',cardController.add_wishlist) 
 router.get('/home/product/get-wishlist-products/:userId',cardController.get_wishlist) 
+router.delete('/home/product/remove-wishlist-product/:wishlistId',cardController.remove_wishlist) 
 
 module.exports = router 
