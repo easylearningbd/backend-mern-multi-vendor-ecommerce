@@ -156,6 +156,10 @@ class orderController{
      }
  // End Method 
 
+ get_order_details = async (req, res) => {
+    console.log(req.params)
+ }
+ // End Method 
 
 }
 
