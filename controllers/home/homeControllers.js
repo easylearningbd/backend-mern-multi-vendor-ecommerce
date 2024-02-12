@@ -208,6 +208,11 @@ submit_review = async (req, res) => {
 }
 // end method 
 
+get_reviews = async (req, res) => {
+    const {productId} = req.params
+    const {pageNo} = req.query 
+}
+// end method
 
 
 }
