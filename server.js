@@ -20,8 +20,29 @@ const io = socket(server, {
     }
 })
 
+var allCustomer = []
+const addUser = (customerId,socketId,userInfo) => {
+    const checkUser = allCustomer.some(u => u.customerId === customerId)
+    if (!checkUser) {
+        allCustomer.push({
+            customerId,
+            socketId,
+            userInfo
+        })
+    }
+} 
+
+
 io.on('connection', (soc) => {
     console.log('socket server running..')
+
+    soc.on('add_user',(customerId,userInfo)=>{
+         addUser(customerId,soc.id,userInfo)
+          
+    })
+
+
+
 })
 
 
