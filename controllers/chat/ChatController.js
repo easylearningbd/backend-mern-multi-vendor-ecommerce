@@ -190,6 +190,13 @@ class ChatController{
   }
     // End Method 
 
+    get_customers_seller_message = async(req, res) => {
+        console.log(req.params)
+        const {id} = req
+        console.log(id )
+    }
+     // End Method 
+
 }
 
 
