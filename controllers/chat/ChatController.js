@@ -119,8 +119,10 @@ class ChatController{
     }
     // End Method 
 
-
-
+    customer_message_add = async (req, res) => {
+        console.log(req.body)
+    }
+  // End Method 
 
 }
 
