@@ -45,6 +45,10 @@ const addSeller = (sellerId,socketId,userInfo) => {
     }
 } 
 
+const findCustomer = (customerId) => {
+    return allCustomer.find(c => c.customerId === customerId)
+}
+
 
 io.on('connection', (soc) => {
     console.log('socket server running..')
@@ -55,6 +59,12 @@ io.on('connection', (soc) => {
     })
     soc.on('add_seller',(sellerId, userInfo) => {
        addSeller(sellerId,soc.id,userInfo)
+    })
+    soc.on('send_seller_message',(msg) => {
+        const customer = findCustomer(msg.receverId)
+        if (customer !== undefined) {
+            soc.to(customer.socketId).emit('seller_message', msg)
+        }
     })
 
 
