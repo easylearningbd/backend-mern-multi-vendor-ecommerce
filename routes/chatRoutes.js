@@ -7,6 +7,7 @@ router.post('/chat/customer/send-message-to-seller',ChatController.customer_mess
 
 router.get('/chat/seller/get-customers/:sellerId',ChatController.get_customers)
 router.get('/chat/seller/get-customer-message/:customerId',authMiddleware,ChatController.get_customers_seller_message)
+router.post('/chat/seller/send-message-to-customer',authMiddleware,ChatController.seller_message_add)
  
 
 module.exports = router 

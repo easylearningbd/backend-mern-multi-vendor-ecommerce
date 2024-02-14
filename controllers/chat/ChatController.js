@@ -231,6 +231,16 @@ class ChatController{
     }
      // End Method 
 
+
+     seller_message_add = async (req, res) => {
+        console.log(req.body)
+     }
+     // End Method 
+
+
+
+
+
 }
 
 
