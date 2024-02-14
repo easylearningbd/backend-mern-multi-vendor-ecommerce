@@ -69,8 +69,8 @@ io.on('connection', (soc) => {
         if (customer !== undefined) {
             soc.to(customer.socketId).emit('seller_message', msg)
         }
-    }) 
-
+    })  
+ 
 
     soc.on('disconnect',() => {
         console.log('user disconnect')
@@ -81,7 +81,7 @@ io.on('connection', (soc) => {
 
 })
 
-
+ 
 require('dotenv').config()
   
 
