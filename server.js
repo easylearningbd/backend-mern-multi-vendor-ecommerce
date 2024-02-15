@@ -89,6 +89,12 @@ io.on('connection', (soc) => {
         }
     })
 
+    soc.on('send_message_seller_to_admin',(msg) => { 
+        if (admin.socketId) {
+            soc.to(admin.socketId).emit('receved_seller_message', msg)
+        }
+    })
+
 
 
     soc.on('add_admin',(adminInfo) => {
