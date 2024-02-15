@@ -302,7 +302,13 @@ class ChatController{
   }
     // End Method 
 
+    seller_admin_message_insert = async (req, res) => {
+        console.log(req.body)
+    } 
+ // End Method 
 
+
+ 
 }
 
 
