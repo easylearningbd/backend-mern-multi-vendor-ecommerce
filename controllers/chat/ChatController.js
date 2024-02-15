@@ -364,6 +364,45 @@ class ChatController{
  // End Method 
 
 
+ get_seller_messages = async (req, res) => {
+    const receverId = ""
+    const {id} = req
+
+    try {
+        const messages = await adminSellerMessage.find({
+            $or: [
+                {
+                    $and: [{
+                        receverId: {$eq: receverId}
+                    },{
+                        senderId: {
+                            $eq: id
+                        }
+                    }]
+                },
+                {
+                    $and: [{
+                        receverId: {$eq: id}
+                    },{
+                        senderId: {
+                            $eq: receverId
+                        }
+                    }]
+                }
+            ]
+       })
+ 
+       responseReturn(res, 200, {
+        messages 
+       })
+        
+    } catch (error) {
+        console.log(error)
+    } 
+ }
+ // End Method 
+
+
 }
 
 
