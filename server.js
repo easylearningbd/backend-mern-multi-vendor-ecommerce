@@ -22,6 +22,7 @@ const io = socket(server, {
 
 var allCustomer = []
 var allSeller = []
+let admin = {}
 
 const addUser = (customerId,socketId,userInfo) => {
     const checkUser = allCustomer.some(u => u.customerId === customerId)
@@ -81,6 +82,16 @@ io.on('connection', (soc) => {
         }
     })  
 
+
+
+    soc.on('add_admin',(adminInfo) => {
+        delete adminInfo.email
+        delete adminInfo.password
+        admin = adminInfo
+        admin.socketId = soc.id  
+        io.emit('activeSeller', allSeller) 
+
+     })
 
     soc.on('disconnect',() => {
         console.log('user disconnect')
