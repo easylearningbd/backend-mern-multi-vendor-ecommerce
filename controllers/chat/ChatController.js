@@ -320,6 +320,48 @@ class ChatController{
     } 
  // End Method 
 
+ get_admin_messages = async (req, res) => {
+    const { receverId } = req.params 
+    const id = ""
+
+    try {
+        const messages = await adminSellerMessage.find({
+            $or: [
+                {
+                    $and: [{
+                        receverId: {$eq: receverId}
+                    },{
+                        senderId: {
+                            $eq: id
+                        }
+                    }]
+                },
+                {
+                    $and: [{
+                        receverId: {$eq: id}
+                    },{
+                        senderId: {
+                            $eq: receverId
+                        }
+                    }]
+                }
+            ]
+       })
+
+       let currentSeller = {}
+       if (receverId) {
+          currentSeller = await sellerModel.findById(receverId)
+       }
+       responseReturn(res, 200, {
+        messages,
+        currentSeller
+       })
+        
+    } catch (error) {
+        console.log(error)
+    } 
+ }
+ // End Method 
 
 
 }
