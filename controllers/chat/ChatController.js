@@ -2,6 +2,7 @@ const sellerModel = require('../../models/sellerModel')
 const customerModel = require('../../models/customerModel')
 const sellerCustomerModel = require('../../models/chat/sellerCustomerModel')
 const sellerCustomerMessage = require('../../models/chat/sellerCustomerMessage')
+const adminSellerMessage = require('../../models/chat/adminSellerMessage')
 const { responseReturn } = require('../../utiles/response')
 
 
@@ -303,12 +304,24 @@ class ChatController{
     // End Method 
 
     seller_admin_message_insert = async (req, res) => {
-        console.log(req.body)
+        const {senderId,receverId,message,senderName} = req.body
+
+        try {
+            const messageData = await adminSellerMessage.create({
+                senderId,
+                receverId,
+                message,
+                senderName 
+            })
+            responseReturn(res, 200, {message: messageData}) 
+        } catch (error) {
+            console.log(error)
+        }
     } 
  // End Method 
 
 
- 
+
 }
 
 
