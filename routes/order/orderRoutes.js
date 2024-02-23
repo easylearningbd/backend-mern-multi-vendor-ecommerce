@@ -9,6 +9,7 @@ router.get('/home/coustomer/get-order-details/:orderId',orderController.get_orde
 
 // Admin
 router.get('/admin/orders',orderController.get_admin_orders)
+router.get('/admin/order/:orderId',orderController.get_admin_order)
 
 // Seller
  

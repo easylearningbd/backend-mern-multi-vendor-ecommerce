@@ -212,9 +212,11 @@ class orderController{
 
  }
   // End Method 
-
-
-
+  
+  get_admin_order = async (req, res) => {
+    console.log(req.params)
+  }
+  // End Method 
 
 }
 
