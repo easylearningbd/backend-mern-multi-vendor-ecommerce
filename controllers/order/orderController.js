@@ -255,6 +255,13 @@ class orderController{
   }
   // End Method 
 
+  get_seller_orders = async (req,res) => {
+        const {sellerId} = req.params
+        // let {page,searchValue,parPage} = req.query
+        console.log(sellerId)
+        console.log(req.query)
+  }
+  // End Method 
 
 }
 
