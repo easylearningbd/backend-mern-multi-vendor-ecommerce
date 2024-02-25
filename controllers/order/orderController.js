@@ -1,5 +1,9 @@
 const authOrderModel = require('../../models/authOrder')
 const customerOrder = require('../../models/customerOrder')
+
+const myShopWallet = require('../../models/myShopWallet')
+const sellerWallet = require('../../models/sellerWallet')
+
 const cardModel = require('../../models/cardModel')
 const moment = require("moment")
 const { responseReturn } = require('../../utiles/response') 
@@ -334,7 +338,25 @@ class orderController{
 
   order_confirm = async (req,res) => {
     const {orderId} = req.params
-    console.log(orderId)
+    try {
+        await customerOrder.findByIdAndUpdate(orderId, { payment_status: 'paid' })
+        await authOrderModel.updateMany({ orderId: new ObjectId(orderId)},{
+            payment_status: 'paid', delivery_status: 'pending'  
+        })
+        const cuOrder = await customerOrder.findById(orderId)
+
+        const auOrder = await authOrderModel.find({
+            orderId: new ObjectId(orderId)
+        })
+
+        const time = moment(Date.now()).format('l')
+        const splitTime = time.split('/')
+        
+        
+    } catch (error) {
+        
+    }
+     
   }
    // End Method 
 
