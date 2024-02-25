@@ -325,7 +325,7 @@ class orderController{
                 enabled: true
             }
         })
-        responseReturn(res, 200, { clientSecret: payment.create_secrect })
+        responseReturn(res, 200, { clientSecret: payment.client_secret })
     } catch (error) {
         console.log(error.message)
     }
