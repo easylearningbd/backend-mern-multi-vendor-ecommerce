@@ -4,6 +4,7 @@ const cardModel = require('../../models/cardModel')
 const moment = require("moment")
 const { responseReturn } = require('../../utiles/response') 
 const { mongo: {ObjectId}} = require('mongoose')
+const stripe = require('stripe')('sk_test_51Oml5cGAwoXiNtjJZbPFBKav0pyrR8GSwzUaLHLhInsyeCa4HI8kKf2IcNeUXc8jc8XVzBJyqjKnDLX9MlRjohrL003UDGPZgQ')
 
 class orderController{
 
@@ -314,6 +315,22 @@ class orderController{
   }
   // End Method 
 
+  create_payment = async (req, res) => {
+    const { price } = req.body
+    try {
+        const payment = await stripe.paymentIntents.create({
+            amount: price * 100,
+            currency: 'usd',
+            automatic_payment_methods: {
+                enabled: true
+            }
+        })
+        responseReturn(res, 200, { clientSecret: payment.create_secrect })
+    } catch (error) {
+        console.log(error.message)
+    }
+  }
+  // End Method 
 
 }
 
