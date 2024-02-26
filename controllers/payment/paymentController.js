@@ -6,7 +6,9 @@ const withdrowRequest = require('../../models/withdrowRequest')
 
 const {v4: uuidv4} = require('uuid')
 const { responseReturn } = require('../../utiles/response')
+const { mongo: {ObjectId}} = require('mongoose')
 const stripe = require('stripe')('sk_test_51Oml5cGAwoXiNtjJZbPFBKav0pyrR8GSwzUaLHLhInsyeCa4HI8kKf2IcNeUXc8jc8XVzBJyqjKnDLX9MlRjohrL003UDGPZgQ')
+
 
 class paymentController{
 
@@ -181,7 +183,24 @@ class paymentController{
 
     payment_request_confirm = async (req, res) => {
         const {paymentId} = req.body 
-        console.log(paymentId)
+        try {
+            const payment = await withdrowRequest.findById(paymentId)
+            const {stripeId} = await stripeModel.findOne({
+                sellerId: new ObjectId(payment.sellerId)
+            })
+
+            await stripe.transfers.create({
+                amount: payment.amount * 100,
+                currency: 'usd',
+                destination: stripeId
+            })
+             
+            await withdrowRequest.findByIdAndUpdate(paymentId, {status: 'success'})
+            responseReturn(res, 200, {payment, message: 'Request Confirm Success'})
+
+        } catch (error) { 
+            responseReturn(res, 500,{ message: 'Internal Server Error'})
+        }
     }
   // End Method 
 
