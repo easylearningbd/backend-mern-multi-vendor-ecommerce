@@ -82,18 +82,73 @@ class paymentController{
     }
       // End Method 
 
+    sumAmount = (data) => {
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) {
+            sum = sum + data[i].amount;            
+        }
+        return sum
+    }  
+
 
     get_seller_payment_details = async (req, res) => {
     const {sellerId} = req.params
     
     try {
         const payments = await sellerWallet.find({ sellerId }) 
+
+        const pendingWithdrows = await withdrowRequest.find({
+            $and: [
+                {
+                    sellerId: {
+                        $eq: sellerId
+                    }
+                },
+                {
+                    status: {
+                        $eq: 'pending'
+                    }
+                }
+            ]
+        })
+
+        const successWithdrows = await withdrowRequest.find({
+            $and: [
+                {
+                    sellerId: {
+                        $eq: sellerId
+                    }
+                },
+                {
+                    status: {
+                        $eq: 'success'
+                    }
+                }
+            ]
+        })
+
+        const pendingAmount = this.sumAmount(pendingWithdrows)
+        const withdrowAmount = this.sumAmount(successWithdrows)
+        const totalAmount = this.sumAmount(payments)
+
+        let availableAmount = 0;
+
+        if (totalAmount > 0) {
+            availableAmount = totalAmount - (pendingAmount + withdrowAmount)
+        }
+
+        responseReturn(res, 200,{
+            totalAmount,
+            pendingAmount,
+            withdrowAmount,
+            availableAmount,
+            pendingWithdrows,
+            successWithdrows 
+        })
         
     } catch (error) {
-        
-    }
-
-
+        console.log(error.message)
+    } 
      
     }
     // End Method 
