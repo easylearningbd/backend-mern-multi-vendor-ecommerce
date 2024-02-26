@@ -179,6 +179,11 @@ class paymentController{
   }
     // End Method 
 
+    payment_request_confirm = async (req, res) => {
+        const {paymentId} = req.body 
+        console.log(paymentId)
+    }
+  // End Method 
 
 }
 
