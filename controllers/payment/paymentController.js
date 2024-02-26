@@ -198,7 +198,7 @@ class paymentController{
             await withdrowRequest.findByIdAndUpdate(paymentId, {status: 'success'})
             responseReturn(res, 200, {payment, message: 'Request Confirm Success'})
 
-        } catch (error) { 
+        } catch (error) {   
             responseReturn(res, 500,{ message: 'Internal Server Error'})
         }
     }

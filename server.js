@@ -132,6 +132,7 @@ app.use('/api',require('./routes/dashboard/sellerRoutes'))
 app.use('/api',require('./routes/home/customerAuthRoutes'))
 app.use('/api',require('./routes/chatRoutes'))
 app.use('/api',require('./routes/paymentRoutes'))
+app.use('/api',require('./routes/dashboard/dashboardRoutes'))
 
 app.get('/',(req,res) => res.send('Hello Server'))
 const port = process.env.PORT
