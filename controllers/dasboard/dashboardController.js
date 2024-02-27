@@ -7,7 +7,10 @@ const adminSellerMessage = require('../../models/chat/adminSellerMessage')
 const sellerWallet = require('../../models/sellerWallet') 
 const authOrder = require('../../models/authOrder') 
 const sellerCustomerMessage = require('../../models/chat/sellerCustomerMessage') 
+const bannerModel = require('../../models/bannerModel') 
 const { mongo: {ObjectId}} = require('mongoose')
+const cloudinary = require('cloudinary').v2
+const formidable = require("formidable")
 
 class dashboardController{
 
@@ -118,6 +121,37 @@ class dashboardController{
         
     }
     //end Method 
+
+    add_banner = async(req,res) => {
+       const form = formidable({multiples:true})
+       form.parse(req, async(err, field, files) => {
+        const {productId} = field
+        const { mainban } = files
+
+        cloudinary.config({
+            cloud_name: process.env.cloud_name,
+            api_key: process.env.api_key,
+            api_secret: process.env.api_secret,
+            secure: true
+        })
+        
+        try {
+            const {slug} = await productModel.findById(productId) 
+            const result = await cloudinary.uploader.upload(mainban.filepath, {folder: 'banners'})
+            const banner = await bannerModel.create({
+                productId,
+                banner: result.url,
+                link: slug 
+            })
+            responseReturn(res, 200, {banner,message: "Banner Add Success"})
+        } catch (error) {
+            responseReturn(res, 500, { error: error.message})
+        } 
+        
+       })
+    }
+
+        //end Method 
 
 }
 
