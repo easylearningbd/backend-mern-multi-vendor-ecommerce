@@ -2,7 +2,7 @@ const formidable = require("formidable")
 const { responseReturn } = require("../../utiles/response")
 const cloudinary = require('cloudinary').v2
 const categoryModel = require('../../models/categoryModel')
-
+ 
 class categoryController{
 
     add_category = async (req, res) => {
