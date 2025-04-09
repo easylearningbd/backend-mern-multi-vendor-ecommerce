@@ -9,13 +9,13 @@ const socket = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
 app.use(cors({
-    origin : ['http://localhost:3000','http://localhost:3001'],
+    origin : process.env.mode === 'pro' ? [process.env.client_customer_production_url,] : ['http://localhost:3000', 'http://localhost:3001'],
     credentials: true
 }))
 
 const io = socket(server, {
     cors: {
-        origin: '*',
+        origin: process.env.mode === 'pro' ? [process.env.client_customer_production_url,] : ['http://localhost:3000', 'http://localhost:3001'],
         credentials: true
     }
 })
@@ -52,7 +52,7 @@ const findCustomer = (customerId) => {
 const findSeller = (sellerId) => {
     return allSeller.find(c => c.sellerId === sellerId)
 }
-
+  
 const remove = (socketId) => {
     allCustomer = allCustomer.filter(c => c.socketId !== socketId)
     allSeller = allSeller.filter(c => c.socketId !== socketId)

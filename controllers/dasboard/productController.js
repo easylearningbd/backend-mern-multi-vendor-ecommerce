@@ -103,13 +103,13 @@ class productController{
     // End Method 
 
     product_update = async (req, res) => {
-        let {name, description, stock,price, discount,brand,productId} = req.body;
+        let {name, description, stock,price,category, discount,brand,productId} = req.body;
         name = name.trim()
         const slug = name.split(' ').join('-')
 
         try {
             await productModel.findByIdAndUpdate(productId, {
-                name, description, stock,price, discount,brand,productId, slug
+                name, description, stock,price,category, discount,brand,productId, slug
             })
             const product = await productModel.findById(productId)
             responseReturn(res, 200,{product, message : 'Product Updated Successfully'})
